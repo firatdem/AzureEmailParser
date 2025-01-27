@@ -1,0 +1,10 @@
+pandas
+openpyxl
+python-dotenv
+pytesseract
+pillow
+numpy
+pymupdf
+pdf2image
+msal
+requests

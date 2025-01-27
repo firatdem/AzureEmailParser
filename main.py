@@ -31,8 +31,14 @@ def main():
             process_pdf_file(pdf_path, excel_path)
 
     elif choice == "2":
-        print("Starting email listener...")
-        continuous_listener()
+        print("Select an Excel file to append the email data to (or cancel to create a new one).")
+        excel_path = filedialog.askopenfilename(filetypes=[("Excel Files", "*.xlsx")])
+
+        if not excel_path:
+            print("No existing Excel file selected, a new one will be created.")
+            continuous_listener(None)
+        else:
+            continuous_listener(excel_path)
 
     else:
         print("Invalid choice. Please select either 1 or 2.")
