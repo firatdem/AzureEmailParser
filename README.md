@@ -4,7 +4,7 @@ but if you are familiar with regex syntax, you can allow it to work with your da
 
 Uses Microsoft Graph API
 Requires a .env file set up like this:
-# Microsoft Azure AD Application Client ID
+
 CLIENT_ID=""
 
 Regardless, returns all parsed text on a pdf.
@@ -20,3 +20,5 @@ If you select 2, you will be prompted to connect your microsoft 365 organization
 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code ******* to authenticate.
 
 This was more testing to connect to a Azure app using a .env, so the email listener portion is very lack luster.
+
+Email listener requires you to go through the app registration process on Azure, you also need that secret key, FYI.
