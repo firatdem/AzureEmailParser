@@ -1,24 +1,113 @@
-Tool I made for work. Parses pdfs, and uses regex along with ocr to parse meaningful text. 
-Programmed to the format of a commonly received invoice, and immediately prints to an excel sheet.
-but if you are familiar with regex syntax, you can allow it to work with your data. This logic is found in 'parsingUtil.py'
 
-Uses Microsoft Graph API
-Requires a .env file set up like this:
+# PDF Invoice Parser & OCR Excel Exporter
 
-CLIENT_ID=""
+A Python utility built for internal use to automate the extraction of invoice data from PDFs using OCR and regex. Designed to work with a standardized invoice format, but customizable with your own regex rules for broader compatibility.
 
-Regardless, returns all parsed text on a pdf.
+## Features
 
-Run:
+- Parses PDFs using OCR (via Tesseract) and custom regex
+- Outputs structured invoice data to a formatted Excel spreadsheet
+- Supports batch processing from emails (via Microsoft Graph API)
+- Flexible architecture allows you to adapt regex parsing logic for your own document types
+- Saves raw OCR text and optionally marks up images for visual debugging
+- Built-in GUI file selection dialogs
+
+## Setup
+
+1. Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
-Upon launching the script from main, you will be given two options.
+2. Set up `.env` file:
 
-If you select 1, it will open a windows file dialog selection, the second file selected is to append to an excel.
-If you select 2, you will be prompted to connect your microsoft 365 organization email account.See below.
+```env
+CLIENT_ID=""
+TENANT_ID=""           # Optional; defaults to 'common'
+SCOPE="Mail.ReadWrite" # Can be adjusted based on your app permissions
+DOWNLOAD_FOLDER="./Downloads"
+POLL_INTERVAL=300      # Optional; default 300 seconds (5 min)
+```
 
-To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code ******* to authenticate.
+Required for Microsoft Graph API access.
 
-This was more testing to connect to a Azure app using a .env, so the email listener portion is very lack luster.
+## How to Use
 
-Email listener requires you to go through the app registration process on Azure, you also need that secret key, FYI.
+Run the main script:
+
+```bash
+python main.py
+```
+
+You will be prompted with two options:
+
+### Option 1: Parse Local PDF Files
+
+- Select a PDF file
+- Then choose an existing Excel file to append to, or cancel to create a new one
+
+### Option 2: Listen to Incoming Emails
+
+- Requires you to sign into your Microsoft 365 account using device code login
+- Connects to your registered Azure App and polls for unread emails with PDF attachments
+- Extracted data is appended to the Excel file you select or creates a new one
+
+## Output
+
+- Extracted data is saved as:
+  - `*_extracted.xlsx` — Clean structured data
+  - `*_extracted.txt` — Raw OCR text
+- For each invoice, the following fields are extracted (if available):
+  - `Date`
+  - `Company`
+  - `Location`
+  - `Purchase Order`
+  - `Description`
+  - `Amount`
+
+## Customizing for Your PDFs
+
+The regex logic is located in:
+
+```
+parsingUtil.py > parse_extracted_text_with_regex()
+```
+
+You can modify these expressions to fit different invoice layouts. If your documents differ significantly, consider using the `parse_extracted_text()` function for more manual parsing.
+
+## Email Listener (Graph API)
+
+Email functionality is provided via Microsoft Graph API and is available in:
+
+- `emailListener.py`: For continuous or batch fetching of attachments
+- `emailUtil.py`: (optional IMAP listener — legacy and basic)
+
+To use it, register your application in [Azure App Registrations](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps) and enable required scopes.
+
+## Notes
+
+- If your invoice PDF is image-based, OCR will be used to extract text.
+- Program assumes a consistent invoice layout; validation messages will appear in the console if key fields are missing.
+- Email polling is basic but extendable. Contributions welcome.
+
+## Requirements
+
+See `requirements.txt`, or install manually:
+
+```bash
+pandas
+openpyxl
+python-dotenv
+pytesseract
+pillow
+numpy
+pymupdf
+pdf2image
+msal
+requests
+```
+
+## Acknowledgements
+
+Built to streamline invoice processing at work. Modular and extensible for others to adapt and improve upon.
