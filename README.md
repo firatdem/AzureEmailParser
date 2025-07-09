@@ -9,6 +9,13 @@
 
 A Python utility built for internal use to automate the extraction of invoice data from PDFs using OCR and regex. Designed to work with a standardized invoice format, but customizable with your own regex rules for broader compatibility.
 
+## Use Cases
+
+- Auto-extract invoices from vendor emails
+- Convert scanned PDFs into Excel records
+- Speed up AP/AR workflows with minimal human input
+- Internal back-office automation with GUI + email integration
+
 ## Features
 
 - Parses PDFs using OCR (via Tesseract) and custom regex
@@ -17,6 +24,13 @@ A Python utility built for internal use to automate the extraction of invoice da
 - Flexible architecture allows you to adapt regex parsing logic for your own document types
 - Saves raw OCR text and optionally marks up images for visual debugging
 - Built-in GUI file selection dialogs
+
+## How It Works (in Brief)
+
+1. Downloads PDF invoices (from email or file picker)
+2. Applies OCR to extract raw text from each page
+3. Parses fields using regex rules
+4. Saves structured data to Excel and raw text for backup
 
 ## Setup
 
