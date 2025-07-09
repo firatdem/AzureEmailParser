@@ -1,6 +1,11 @@
 
 # PDF Invoice Parser & OCR Excel Exporter
 
+[Email Inbox] → [Download PDFs] → [OCR + Regex Parsing] → [Excel Export]
+                                        ↓
+                               [Raw Text File Saved]
+
+
 A Python utility built for internal use to automate the extraction of invoice data from PDFs using OCR and regex. Designed to work with a standardized invoice format, but customizable with your own regex rules for broader compatibility.
 
 ## Features
